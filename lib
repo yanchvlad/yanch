@@ -1,0 +1,45 @@
+
+def equal_group(tr_, ct_, gt=[], cnt=1, replace=False):
+    
+    tr=tr_.copy()
+    ct=ct_.copy()
+    reb=False
+    ls=[]
+    tmp=pd.DataFrame()
+    
+    
+    def stat(tr,ct):
+        print('Stats')
+        print('Does target spa_key unique? ',tr['spa_key'].is_unique)
+        print('Does control spa_key unique? ',ct['spa_key'].is_unique)
+        print('Number of rows taget ',tr['spa_key'].count())
+        print('Number of rows control ',ct['spa_key'].count())
+        if tr['spa_key'].count()==ct['spa_key'].count(): print('Is it equal? True\n') 
+        else: print('Is it equal? False\n')
+    
+    
+    tr=tr.assign(counter=tr.groupby(gt).ngroup()+1)
+    gt.append('counter')
+    ct=pd.merge(ct, tr.drop_duplicates('counter')[gt], on=gt[:len(gt)-1], how='left')
+        
+    for i in tr['counter'].unique().copy():
+        try:
+            ls.append(ct[ct.counter==i].sample(n=tr.groupby(by=['counter'])['spa_key'].count()[i]*cnt,replace=replace))
+        except:
+                reb=True
+    tmp=pd.concat(ls, axis=0)
+    
+    if reb:
+        
+        print('----------WARNING----------\n')
+        print('Do not have enough rows, target will be rebuild to match new control. You can use bootstrap: replace=True\n')
+        tr=tr[tr.counter.isin(tmp.counter)]
+        stat(tr,tmp)
+        return tr.drop('counter', axis=1), tmp.drop('counter', axis=1)
+               
+    else:
+        stat(tr,tmp)
+        return tr.drop('counter', axis=1), tmp.drop('counter', axis=1)
+        
+        
+        
