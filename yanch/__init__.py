@@ -1,4 +1,25 @@
 
+#split on target and control group
+def tc(tr, frac=0.1):
+    ct=tr.sample(frac=frac)
+    tr=tr[~tr.index.isin(ct.index)]
+    return tr, ct
+
+
+#split dataframe by 1M or N rows for excel
+def exs(df, max_rows=1000000):
+    dataframes = []
+    while len(df) > max_rows:
+        top = df[:max_rows]
+        dataframes.append(top)
+        df = df[max_rows:]
+    else:
+        dataframes.append(df)
+    return dataframes
+
+
+
+#equalizer of target and control group by basis
 def eqg(tr_, ct_, gt=[], cnt=1, replace=False):
     
     tr=tr_.copy()
@@ -42,8 +63,14 @@ def eqg(tr_, ct_, gt=[], cnt=1, replace=False):
         return tr.drop('counter', axis=1), tmp.drop('counter', axis=1)
 
 
-        
-        
+
+# impala select   
+def imp_sel(str=''''''):
+    cur.execute(str)
+    return as_pandas(cur)
+
+
+# impala insert         
 def imp_ins(conn, table, data, into=True, partition = ''):  
     
     def pd_to_impala_types(df):
@@ -93,7 +120,8 @@ def imp_ins(conn, table, data, into=True, partition = ''):
     q = q%{'table':table, 'columns':columns, 'values':values, 'partition': partition}
     # print(q)
     conn.execute(q)
-	
+
+#print function 
 def p_tc(xn_, metric='ARPU'):
     xn=xn_.copy()
     fig=plt.figure(figsize=(20, 10))
