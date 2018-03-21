@@ -73,7 +73,7 @@ def imp_sel(str=''''''):
 
 
 # impala insert         
-def insert_dataframe(conn, table, data, into=True, partition = ''):  
+def imp_ins(conn, table, data, into=True, partition = ''):  
     
     import numpy as np
     import pandas as pd
