@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 
 #split on target and control group
 def tc(tr, frac=0.1):
