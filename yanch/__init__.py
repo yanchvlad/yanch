@@ -73,10 +73,11 @@ def imp_sel(str=''''''):
 
 
 # impala insert         
-def imp_ins(conn, table, data, into=True, partition = ''):  
-    from numpy import int64 
-    from numpy import int32 
+def insert_dataframe(conn, table, data, into=True, partition = ''):  
+    
     import numpy as np
+    import pandas as pd
+    
     def pd_to_impala_types(df):
         impala_types = []
         for name, dtype in zip(df.columns, df.dtypes):
@@ -86,12 +87,9 @@ def imp_ins(conn, table, data, into=True, partition = ''):
                 impala_types.append('DOUBLE')
             elif "int" in str(dtype):
                 impala_types.append('BIGINT')
+            
             elif "datetime64" in str(dtype):
                 impala_types.append('TIMESTAMP')
-            elif "int64" in str(dtype):
-                impala_types.append('BIGINT')
-            elif "int32" in str(dtype):
-                impala_types.append('BIGINT')
             else:
                 impala_types.append('STRING')
         return impala_types
@@ -123,10 +121,10 @@ def imp_ins(conn, table, data, into=True, partition = ''):
             (%(values)s)
     """
     columns = ",".join(data.columns)
-    values = ",".join(["("+",".join(['Null' if el is None else (str(el) if isinstance(el, (bool, int, float, int64, int32 )) else "'" + str(el).replace("'","") + "'")\
+    values = ",".join(["("+",".join(['Null' if el is None else (str(el) if isinstance(el, (bool, int, float, np.int64,np.int32 )) else "'" + str(el).replace("'","") + "'")\
                                          for el in r[1].values])+")" for r in data.iterrows()])
     q = q%{'table':table, 'columns':columns, 'values':values, 'partition': partition}
-    # print(q)
+    #print(q)
     conn.execute(q)
 
 #print function 
