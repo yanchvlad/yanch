@@ -118,7 +118,7 @@ def imp_ins(conn, table, data, into=True, partition = ''):
             (%(values)s)
     """
     columns = ",".join(data.columns)
-    values = ",".join(["("+",".join(['Null' if el is None else (str(el) if isinstance(el, (bool, int, float, np.int64,np.int32 )) else "'" + str(el).replace("'","") + "'")\
+    values = ",".join(["("+",".join(['Null' if el is None else (str(el) if isinstance(el, (bool, int, float, int64, int32 )) else "'" + str(el).replace("'","") + "'")\
                                          for el in r[1].values])+")" for r in data.iterrows()])
     q = q%{'table':table, 'columns':columns, 'values':values, 'partition': partition}
     # print(q)
