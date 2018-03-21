@@ -76,6 +76,7 @@ def imp_sel(str=''''''):
 def imp_ins(conn, table, data, into=True, partition = ''):  
     from numpy import int64 
     from numpy import int32 
+    import numpy as np
     def pd_to_impala_types(df):
         impala_types = []
         for name, dtype in zip(df.columns, df.dtypes):
