@@ -89,9 +89,9 @@ def imp_ins(conn, table, data, into=True, partition = ''):
             elif "datetime64" in str(dtype):
                 impala_types.append('TIMESTAMP')
             elif "int64" in str(dtype):
-                impala_types.append('int64')
+                impala_types.append('BIGINT')
             elif "int32" in str(dtype):
-                impala_types.append('int32')
+                impala_types.append('BIGINT')
             else:
                 impala_types.append('STRING')
         return impala_types
