@@ -6,7 +6,7 @@ def tc(tr, frac=0.1):
     tr=tr.reset_index(drop=True)
     ct=tr.sample(frac=frac)
     tr=tr[~tr.index.isin(ct.index)]
-    print ('trg size:',tr.shape[0],'        ctr size:', ct.shape[0], '        tr+ct  ', tr.shape[0]+ct.shape[0], '  frac=',frac[ind])
+    print ('trg size:',tr.shape[0],'        ctr size:', ct.shape[0], '        tr+ct  ', tr.shape[0]+ct.shape[0], '  frac=',frac)
     return tr, ct
 
 
