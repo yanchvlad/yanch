@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='yanch',
-      version='0.1.1',
+      version='0.1.2',
       description='lib',
       #url='https://github.com/yanchvlad/yanch',
       author='Vladislav Yanchenko',
