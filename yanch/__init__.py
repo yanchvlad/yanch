@@ -7,12 +7,13 @@ def tc(tr, frac=0.1, random_state=42):
     tr=tr.reset_index(drop=True)
     ct=tr.sample(frac=frac,random_state=random_state)
     tr=tr[~tr.index.isin(ct.index)]
-    print ('trg size:',tr.shape[0],'        ctr size:', ct.shape[0], '        tr+ct  ', tr.shape[0]+ct.shape[0], '  frac=',frac)
-    print('Random state:',random_state)
+    #print ('trg size:',tr.shape[0],'        ctr size:', ct.shape[0], '        tr+ct  ', tr.shape[0]+ct.shape[0], '  frac=',frac)
+    #print('Random state:',random_state)
     log='target size: '+str(tr.shape[0])+'\n'+'control size: '+str(ct.shape[0])+'\n'
     log=log+'target+control size: '+str(tr.shape[0]+ct.shape[0])+'\n'
     log=log+'fraction: '+str(frac*100)+'%'+'\n'+'random state: '+str(random_state)
-    return tr, ct, log
+    print(log)
+    return tr, ct
 
 
 #split dataframe by 1M or N rows for excel
